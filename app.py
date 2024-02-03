@@ -47,7 +47,7 @@ def captioning(img_url):
 
 def captioning_all_in_path(fp: Path):
     '''captioning all the images in the path'''
-    for img_fp in tqdm(fp.rglob('*'), desc="Captioning", total=len(list(fp.rglob('*'))), unit='file'):
+    for img_fp in tqdm(fp.rglob('*'), desc="Captioning", unit='file'):
         if not img_fp.is_file():
             continue
 
