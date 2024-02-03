@@ -1,0 +1,21 @@
+[project]
+name = ""
+version = ""
+description = ""
+authors = [
+    {name = "bar", email = "foo@bar.com"},
+]
+dependencies = [
+    "gradio-client>=0.8.1",
+    "pillow>=10.2.0",
+    "pillow-heif>=0.14.0",
+    "transformers>=4.37.2",
+    "torch>=2.1.2",
+    "loguru>=0.7.2",
+    "pip>=23.3.2",
+    "file:///${PROJECT_ROOT}/",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "MIT"}
+
