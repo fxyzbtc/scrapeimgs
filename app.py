@@ -47,7 +47,10 @@ def captioning(img_url):
 
 def captioning_all_in_path(fp: Path):
     '''captioning all the images in the path'''
-    for img_fp in tqdm(fp.glob('*')):
+    for img_fp in tqdm(fp.rglob('*'), desc="Captioning", total=len(list(fp.rglob('*'))), unit='file'):
+        if not img_fp.is_file():
+            continue
+
         if len(img_fp.name) > 30:
             logger.debug(f"✅|SKIP| File {img_fp} __len__ > 30")
             continue
@@ -64,7 +67,8 @@ def captioning_all_in_path(fp: Path):
 
         except Image.UnidentifiedImageError:
             logger.warning(f"✅| Not Implemented| Image {img_fp}")
-            new_img_fp = parent / (extract_file_modification_time(img_fp) + "_" + img_fp.name)
+            continue
+
         except Exception as e:
             logger.warning(f"❌|ERROR | File {img_fp} reported error {e}")
             continue
@@ -72,11 +76,13 @@ def captioning_all_in_path(fp: Path):
         try:
             os.rename(img_fp, new_img_fp)
             logger.info(f"✅ | DONE| File {img_fp} renamed to {new_img_fp}")
+
         except FileExistsError:
             logger.warning(f"✅|File {new_img_fp} already exists, trying to rename it with alternative name with random number")
             new_img_fp = parent / (dt + "_" + str(choice(range(100))) + "_" + new_img_fp.name + ext)
             try:
                 os.rename(img_fp, new_img_fp)
+                os.remove(img_fp)
             except Exception as e:
                 logger.warning(f"❌|ERROR | File {img_fp} reported error {e}")
         except Exception as e:
